@@ -27,8 +27,9 @@ public class Movie {
 	protected Movie() {
 	}
 
-	public Movie(String name) {
+	public Movie(String name, List<String> actors) {
 		this.name = name;
+		this.actors = actors;
 	}
 
 	public Long getId() {
@@ -46,4 +47,5 @@ public class Movie {
 	public List<String> getActors() {
 		return actors;
 	}
+
 }
