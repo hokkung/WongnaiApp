@@ -3,22 +3,23 @@ package com.wongnai.interview.movie;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.persistence.ElementCollection;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
+@Table(name = "movie")
 public class Movie {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-
+	@Column(name = "name")
 	private String name;
 
 	@ElementCollection(fetch = FetchType.EAGER)
+	@CollectionTable(
+			name = "MOVIE_ACTORS",
+			joinColumns=@JoinColumn(name = "id", referencedColumnName = "id")
+	)
+	@Column(name = "actors")
 	private List<String> actors = new ArrayList<>();
 
 	/**
