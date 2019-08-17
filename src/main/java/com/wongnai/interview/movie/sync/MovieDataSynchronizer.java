@@ -28,21 +28,23 @@ public class MovieDataSynchronizer {
 
         // Request get apis
 		MoviesResponse moviesResponse = movieDataService.fetchAll();
+		// Create list movies
+        List<Movie> movies = new ArrayList<>();
 
 		for (MovieData movieData : moviesResponse) {
 		    // Create movie data
 		    Movie movie = createMovieData(movieData);
-            // Save to database
-            movieRepository.save(movie);
+            // Add to list
+            movies.add(movie);
         }
-        // Print check data
-        System.out.println("Done Done Done Done Done");
+		// Save to database
+        movieRepository.saveAll(movies);
+
 	}
 
 	private Movie createMovieData(MovieData movieData) {
         // Create movie obj
-        Movie movie = new Movie(movieData.getTitle(), movieData.getCast());
-	    return movie;
+	    return new Movie(movieData.getTitle(), movieData.getCast());
     }
 
 }

@@ -44,6 +44,7 @@ public class InvertedIndexMovieSearchService implements MovieSearchService, Init
                     for (Long same : ids) {
                         if (same.equals(id)) {
                             isSame = true;
+                            break;
                         }
                     }
                     if (!isSame) {
@@ -86,10 +87,10 @@ public class InvertedIndexMovieSearchService implements MovieSearchService, Init
                 newMap.put(word, map.get(word));
             }
         }
+
         if (newMap.size() > 1) {
             List<Long> eachIdPerMovie = new ArrayList<>();
             for (Map.Entry entry : newMap.entrySet()) {
-                print(entry.getKey().toString());
                 eachIdPerMovie.addAll((List<Long>) entry.getValue());
             }
             movies = (List<Movie>) movieRepository.findAllById(findDuplicate(eachIdPerMovie));
@@ -106,13 +107,8 @@ public class InvertedIndexMovieSearchService implements MovieSearchService, Init
         int max = 0;
 
         // Find duplicate
-        for (int i = 0 ; i < all.size(); i++) {
-            Long key = all.get(i);
-            if (score.get(key) != null) {
-                score.put(key, score.get(key) + 1);
-            } else {
-                score.put(key, 1);
-            }
+        for (Long key : all) {
+            score.merge(key, 1, Integer::sum);
         }
 
         // Find max value

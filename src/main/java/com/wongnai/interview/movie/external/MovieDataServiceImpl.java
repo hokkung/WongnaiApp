@@ -1,6 +1,7 @@
 package com.wongnai.interview.movie.external;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestOperations;
 
@@ -10,10 +11,12 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
+import java.io.DataInput;
+
 @Component
 public class MovieDataServiceImpl implements MovieDataService {
 	public static final String MOVIE_DATA_URL
-			= "https://raw.githubusercontent.com/";
+			= "https://raw.githubusercontent.com/prust/wikipedia-movie-data/master/movies.json";
 
 	@Autowired
 	private RestOperations restTemplate;
@@ -30,25 +33,13 @@ public class MovieDataServiceImpl implements MovieDataService {
 
 		// Init response
 		MoviesResponse moviesResponse = null;
+        try {
+            String json = restTemplate.getForObject(MOVIE_DATA_URL, String.class);
+            moviesResponse = objectMapper.readValue(json, MoviesResponse.class);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
 
-		try {
-		// Create retrofit
-		Retrofit retrofit = new Retrofit.Builder()
-				.baseUrl(MOVIE_DATA_URL)
-				.addConverterFactory(GsonConverterFactory.create())
-				.build();
-
-		// Create interface
-		IMovieData apis = retrofit.create(IMovieData.class);
-
-		// Requests
-		Call<MoviesResponse> allMovies = apis.getAllMovies();
-		Response<MoviesResponse> res = allMovies.execute();
-		moviesResponse = res.body();
-
-		} catch (Exception e) {
-			System.out.println(e.getMessage());
-		}
 		return moviesResponse;
 	}
 }
