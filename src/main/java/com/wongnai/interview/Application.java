@@ -12,9 +12,6 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 @EnableCaching
 public class Application {
 	public static void main(String[] args) throws Exception {
-//		ConfigurableApplicationContext context = SpringApplication.run(Application.class, args);
-//		MovieDatabaseInitializer movieDatabaseInitializer = context.getBean("movieDatabaseInitializer", MovieDatabaseInitializer.class);
-//		movieDatabaseInitializer.afterPropertiesSet();
 		SpringApplication.run(Application.class, args);
 	}
 }

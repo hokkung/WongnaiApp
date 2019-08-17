@@ -6,12 +6,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestOperations;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import retrofit2.Call;
-import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
-
-import java.io.DataInput;
 
 @Component
 public class MovieDataServiceImpl implements MovieDataService {
